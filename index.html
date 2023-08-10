@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url("fondos/fondo0.jpg");
+  }
+
+  #container {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .caja-mp3 {
+    width: 500px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    background-position: center;
+    background-size: cover;
+    border: 1px solid black;
+    background-color: #ffffff75;
+    border-radius: 50px;
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #nombre-cancion {
+    width: 200px;
+    height: 200px;
+    margin: 15px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 220px;
+    flex-direction: column;
+  }
+
+  #nombre-cancion i {
+    width: 200px;
+    height: 200px;
+    margin: 15px;
+
+  }
+
+  #nombre {
+    border: 1px solid #35ffe76e;
+    border-radius: 18px;
+    background-color: black;
+    color: white;
+    font-size: 25px;
+    width: 350px;
+    text-align: center;
+    margin: 30px;
+    font-family: serif;
+  }
+
+
+  #botones {
+    margin-top: 60px;
+    width: 450px;
+    height: 200px;
+    border: 1px solid #0000002e;
+    font-size: 50px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+  }
+
+  .iconos {
+    margin: 0px 25px;
+    cursor: pointer;
+  }
+</style>
+
+<body>
+  <div id="container">
+
+    <section class="caja-mp3">
+
+      <div id="nombre-cancion">
+        <i class="bi bi-music-note"></i>
+        <div id="nombre">
+
+        </div>
+      </div>
+
+
+      <div id="botones">
+
+        <div>
+          <i id="atras" class="bi bi-skip-backward-fill iconos" title="atras"></i>
+        </div>
+
+        <div>
+          <i id="play" class="bi bi-play-circle-fill iconos" title="play"></i>
+        </div>
+
+        <div>
+          <i id="siguiente" class="bi bi-skip-forward-fill iconos" title="siguiente"></i>
+        </div>
+
+
+      </div>
+
+    </section>
+
+</body>
+<script>
+  let fondoBody = [
+    "fondos/fondo0.jpg",
+    "fondos/fondo1.jpg",
+    "fondos/fondo2.jpg",
+    "fondos/fondo3.jpg",
+    "fondos/fondo4.jpg",
+    "fondos/fondo5.jpg",
+    "fondos/fondo6.jpg",
+    "fondos/fondo7.jpg",
+    "fondos/fondo8.jpg",
+    "fondos/fondo9.jpg",
+    "fondos/fondo10.jpg",
+    "fondos/fondo11.jpg",
+    "fondos/fondo12.jpg",
+    "fondos/fondo13.jpg",
+    "fondos/fondo14.jpg",
+    "fondos/fondo15.jpg",
+  ]
+
+  function fondoRandom() {
+    let indiceAleatorio = Math.floor(Math.random() * fondoBody.length)
+    let body = document.body
+
+    body.style.backgroundImage = `url(${fondoBody[indiceAleatorio]})`
+    // console.log(body.style.backgroundImage = `url(${fondoBody[indiceAleatorio]})`)
+  }
+  setInterval(fondoRandom, 10000)
+
+  const botonPlay = document.getElementById("play");
+  const nombreCancion = document.getElementById("nombre-cancion");
+  const atras = document.getElementById("atras");
+  const siguiente = document.getElementById("siguiente");
+  const nombre = document.getElementById("nombre");
+
+
+  let canciones = [
+    ["Livin' On A Prayer", "Bon Jovi"],
+    ["Sweet Child O' Mine", "Guns N' Roses"],
+    ["Thunderstruck", "AC/DC"],
+    ["I Was Made For Lovin' You", "KISS"],
+    ["It's My Life", "Bon Jovi"],
+    ["You Give Love A Bad Name", "Bon Jovi"],
+    ["Welcome To The Jungle", "Guns N' Roses"],
+    ["De Musica Ligera", "Soda Stereo"],
+    ["Persiana Americana", "Soda Stereo"],
+    ["Back In Black", "AC/DC"]
+
+  ]
+console.log(canciones)
+  let posicion = 0
+
+  // console.log(canciones[0])
+  botonPlay.addEventListener("click", escucharMusica)
+
+  let audioAgregado = false;
+
+  function escucharMusica() {
+    let cajaMusica = document.createElement("audio");
+    cajaMusica.controls = true;
+
+    if (!audioAgregado) {
+
+      cajaMusica.src = `music/${canciones[0][0]}.mp3`
+      //console.log(cajaMusica.src = canciones[0][1])
+
+      cajaMusica.play();
+
+      nombre.style.padding = 15 + "px"
+      nombre.innerText = canciones[posicion][0] + " - " + canciones[posicion][1]
+
+      nombreCancion.appendChild(cajaMusica);
+
+      cajaMusica.addEventListener("ended", function () {
+        cajaMusica.pause();
+      });
+
+      audioAgregado = true; // Marcar como que el <audio> ya fue agregado
+    }
+
+    siguiente.addEventListener("click", function () {
+      if (posicion < canciones.length - 1) {
+        canciones[posicion++]
+        cajaMusica.src = `music/${canciones[posicion][0]}.mp3`
+        cajaMusica.play()
+        nombre.innerText = canciones[posicion][0] + " - " + canciones[posicion][1]
+
+        console.log(canciones[posicion][1])
+      }
+
+    })
+
+    atras.addEventListener("click", function () {
+      if (posicion > 0) {
+        canciones[posicion--]
+        cajaMusica.src = `music/${canciones[posicion][0]}.mp3`
+
+        cajaMusica.play()
+        nombre.innerText = canciones[posicion][0] + " - " + canciones[posicion][1]
+        console.log(canciones[posicion][1])
+      }
+    })
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  function numeroAleatorio(minimo, maximo) {
+    // Generar un número aleatorio en el rango [0, 1)
+    let random = Math.random();
+
+    // Ajustar el número aleatorio al rango deseado [minimo, maximo]
+    let numeroRandom = Math.floor(random * (maximo - minimo + 1)) + minimo;
+
+    return numeroRandom;
+  }
+  //console.log(numeroAleatorio(50, 80))
+
+// Generar número aleatorio entre 50 y 80
+
+
+
+
+
+
+let oracion = "Mi pikacachu se levantó hoy con gripe";
+
+function oracionAlreves(oracion) {
+    let oracionArray = oracion.split(" ")
+
+    //console.log(oracionArray)
+
+    let oracionFinal = "";
+
+    for (let i = 0; i < oracionArray.length; i++) {
+
+        let palabra = oracionArray[i]
+        let palabraInvertida = "";
+
+        for (let j = palabra.length - 1; j >= 0; j--) {
+            palabraInvertida += palabra.slice(j, j + 1)
+        }
+
+        oracionFinal += palabraInvertida + " "
+    }
+
+    return oracionFinal
+}
+
+//console.log(oracionAlreves(oracion));
+
+
+
+
+</script>
+
+</html>
